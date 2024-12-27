@@ -1,6 +1,6 @@
-.redc {
-    background-color: IndianRed !Important;
-    color: Darkred;
+.red {
+    background-color: #F09090 !Important;
+    color: #5B0000;
 }
 
 .green {
@@ -10,4 +10,5 @@
 
 .gray {
     background-color: Gainsboro !Important;
+    color: Black;
 }

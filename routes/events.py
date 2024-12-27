@@ -23,7 +23,6 @@ def filter_by_form():
   student_id = request.args.get('student_id')  # Get the dropdown value
   assignment_id = request.args.get('assignment_id')  # Get the dropdown value
   group_id = request.args.get('group_id')  # Get the dropdown value
-  print("suca", assignment_id, student_id)
   _events = Event.query.all()
   if not student_id and assignment_id:  # Dropdown left unselected
     if group_id:
@@ -45,7 +44,6 @@ def create_events():
   student_id = request.args.get('student_id')  # Get the dropdown value
   assignment_id = request.args.get('assignment_id')  # Get the dropdown value
   group_id = request.args.get('group_id')  # Get the dropdown value
-  print("suca", "assignment: ", assignment_id, "student: ", student_id, "group: ", group_id)
   _events = Event.query.all()
   if assignment_id and not student_id:  # Dropdown left unselected
     if group_id:
@@ -81,10 +79,15 @@ def update_event():
   value = request.args.get('value')
   print("updating id ", event_id, "column ", column, "value ", value)
   # Convert the value to a float (for CE1, CE2, ..., CE10)
-  try:
-    value = float(value)
-  except ValueError:
-    return "Invalid value", 400  # Bad request if value is not a valid float
+  if value == "None" or  value == "":
+    value = None
+  else:
+    try:
+      value = float(value)
+    except ValueError:
+      return "Invalid value", 400  # Bad request if value is not a valid float
+    if value < 0 or value > 10:
+      value = None
   # Fetch the event from the database
   event = Event.query.get(event_id)
   if not event:

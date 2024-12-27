@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       if (numValue < 5) {
 	  //cell.style.backgroundColor = 'IndianRed';
-	  cell.classList.add('redc'); // For values below 5
+	  cell.classList.add('red'); // For values below 5
       } else {
 	cell.classList.add('green'); // For values 5 or greater
       }
@@ -38,13 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Construct the URL with query parameters
 	const url = `/update_event?event_id=${eventId}&column=${column}&value=${newValue}`;
 
-	if (newValue === 'None') {
-	  cell.style.backgroundColor = 'gray';  // For 'None' values
-
+	if (newValue === 'None' || newValue === '') {
+          cell.classList.add('gray');  // For 'None' values
 	} else if (newValue < 5) {
-	  cell.style.backgroundColor = 'red';
+	  cell.classList.remove('gray'); // For values below 5
+	  cell.classList.add('red'); // For values below 5
 	} else {
-	  cell.style.backgroundColor = 'green';
+	  cell.classList.remove('gray'); // For values below 5
+	  cell.classList.add('green'); // For values 5 or greater
 	}
 
 	// Send the GET request with the URL args
