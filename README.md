@@ -188,6 +188,12 @@ The application is easily extendable. You can add more tables or routes to meet 
 
 If you'd like to contribute to this project, feel free to open an issue or submit a pull request. All contributions are welcome!
 
+## Acknowledgements
+
+I would like to acknowledge **Luca Castagnini** for his contributions to this project. His support and expertise have been invaluable in shaping the direction of this application.
+
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
