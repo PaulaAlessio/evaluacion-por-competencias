@@ -1,0 +1,182 @@
+{% extends 'index.html' %}
+{% block content %}
+<h1>Events</h1>
+
+<!-- Include html2canvas library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- Include jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+<!-- Filter Students by Assignment -->
+<form method="GET" id="dynamicForm"  class="mb-4">
+    <div class="mb-3">
+        <label for="assignment_id" class="form-label">Select Assignment</label>
+        <select class="form-select" id="assignment_id" name="assignment_id" value={{ assignment_id }}>
+
+            <option value="">-- No selection --</option>
+            {% set assignment_dict = {} %}
+            {% for assignment in assignments %}
+            {% set assignment_dict = assignment_dict.update({assignment.id: (assignment.assignment_tag, assignment.exercise_number)}) %}
+            {% set selected = 'selected' if assignment.id == assignment_id|int else '' %}
+            <option value="{{ assignment.id }}" {{ selected }}>{{ assignment.assignment_tag}} : {{assignment.exercise_number }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="student_id" class="form-label">Select Student</label>
+        <select class="form-select" id="student_id" name="student_id">
+            <option value="" >-- No selection --</option>
+            {% set student_dict = {} %}
+            {% for student in students %}
+            {% set selected = 'selected' if student.id == student_id|int else '' %}
+            <option value="{{ student.id }}" {{ selected }}> {{ student.name }} </option>
+            {% set student_dict = student_dict.update({student.id: student.name}) %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="group_id" class="form-label">Select Group</label>
+        <select class="form-select" id="group_id" name="group_id">
+            <option value="" >-- No selection --</option>
+            {% set groups_dict = {} %}
+            {% for group in groups %}
+            {% set selected = 'selected' if group.id == group_id|int else '' %}
+            <option value="{{ group.id }}" {{ selected }}>{{ group.name }}</option>
+            {% set groups_dict = groups_dict.update({group.id: group.name}) %}
+            {% endfor %}
+        </select>
+    </div>
+
+    <button id="filter_btn" type="submit" class="btn btn-primary">Apply Filter</button>
+    <button id="create_btn" type="submit" class="btn btn-primary">Generate Events</button>
+</form>
+<div>
+    <button id="export_pdf_btn" type="submit" class="btn btn-primary">Export selected to pdf</button>
+    <button id="exportCsvBtn" type="submit" class="btn btn-primary">Export all to csv</button>
+    <!-- Buttons to Select/Unselect All -->
+    <button id="selectAllBtn" type="submit" class="btn btn-primary">Select All</button>
+    <button id="unselectAllBtn"type="submit" class="btn btn-primary">Unselect All</button>
+</div>
+<hr>
+
+<!-- Form: Add Events Per Assignment -->
+<h2>Add Events Per Assignment</h2>
+<form method="POST" action="/add_events_per_assignment/">
+
+</form>
+
+<!-- Include js file -->
+<script src="/static/js/events.js"></script>
+
+
+<!-- Display Competency Scores (Dynamic Content from Backend) -->
+<h2>Competency Scores</h2>
+{% if events %}
+<div id="competencias">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="no_print"> Select</th>
+            <th class="no_print">ID</th>
+            <th>Student</th>
+            <th>Group</th>
+            <th>Assignment</th>
+            <th>CE1</th>
+            <th>CE2</th>
+            <th>CE3</th>
+            <th>CE4</th>
+            <th>CE5</th>
+            <th>CE6</th>
+            <th>CE7</th>
+            <th>CE8</th>
+            <th>CE9</th>
+            <th>CE10</th>
+            <th class="no_print">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr id="row{{ event.id }}">
+            <td class="no_print"><input type="checkbox" data-row-id="row{{ event.id }}" class="rowCheckbox"></td>
+            <td class="no_print">{{ event.id }}</td>
+            <td>{{ student_dict[event.id_student] }} </td>
+            <td>{{ groups_dict[event.id_group] }}</td>
+            <td>{{ assignment_dict[event.id_assignment][0] }} : {{ assignment_dict[event.id_assignment][1] }}</td>
+            <td contenteditable="true" class="editable" data-column="CE1" data-event-id="{{ event.id }}">{{ event.CE1 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE2" data-event-id="{{ event.id }}">{{ event.CE2 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE3" data-event-id="{{ event.id }}">{{ event.CE3 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE4" data-event-id="{{ event.id }}">{{ event.CE4 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE5" data-event-id="{{ event.id }}">{{ event.CE5 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE6" data-event-id="{{ event.id }}">{{ event.CE6 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE7" data-event-id="{{ event.id }}">{{ event.CE7 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE8" data-event-id="{{ event.id }}">{{ event.CE8 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE9" data-event-id="{{ event.id }}">{{ event.CE9 }}</td>
+            <td contenteditable="true" class="editable" data-column="CE10" data-event-id="{{ event.id }}">{{ event.CE10 }}</td>
+            <td class="no_print">
+                <!-- Delete Button -->
+                <form method="POST" action="/delete_event/{{ event.id }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<p>No events found for the selected criteria.</p>
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const editableCells = document.querySelectorAll(".editable");
+        editableCells.forEach(cell => {
+            cell.addEventListener("keydown", function (event) {
+                // Check if Enter key is pressed
+                if (event.key === "Enter") {
+                    event.preventDefault();  // Prevent Enter from creating a new line in contenteditable
+
+                    const newValue = cell.textContent.trim();  // Get the edited value
+                    const column = cell.getAttribute("data-column");  // Get the column name (CE1, CE2, etc.)
+                    const eventId = cell.getAttribute("data-event-id");  // Get the event ID
+
+                    // Construct the URL with query parameters
+                    const url = `/update_event?event_id=${eventId}&column=${column}&value=${newValue}`;
+
+                    // Send the GET request with the URL args
+                    fetch(url)
+                    .then(response => response.text())  // Expecting text response
+                    .then(data => {
+                        // Handle success (e.g., show a success message, update the table, etc.)
+                        console.log("Event updated successfully:", data);
+                    })
+                    .catch(error => {
+                        // Handle error (e.g., show an error message)
+                        console.error("Error updating event:", error);
+                    });
+                }
+            });
+        });
+    });
+
+    // Generare il CSV direttamente con Jinja
+    const csvData = `
+    Student Name,Group Name,Assignment,CE1,CE2,CE3,CE4,CE5,CE6,CE7,CE8,CE9,CE10
+    {% for event in events %}{{ student_dict[event.id_student] }}, {{ groups_dict[event.id_group] }}, {{ assignment_dict[event.id_assignment][0] }}: {{ assignment_dict[event.id_assignment][1] }}, {{ event.CE1 }},{{ event.CE2 }},{{ event.CE3 }},{{ event.CE4 }},{{ event.CE5 }},{{ event.CE6 }},{{ event.CE7 }},{{ event.CE8 }},{{ event.CE9 }},{{ event.CE10 }}
+    {% if not loop.last %}{% endif %}{% endfor %}`;
+
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+        // Creare un file e scaricarlo
+        const blob = new Blob([csvData.trim()], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'events.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+</script>
+
+
+{% endblock %}

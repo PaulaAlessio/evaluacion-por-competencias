@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<!-- Form to Upload Students -->
+<form method="POST" action="/upload_students" enctype="multipart/form-data" class="mb-4">
+    <label for="file" class="form-label">Upload CSV File</label>
+    <input type="file" id="file" name="file" class="form-control mb-2" required>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<hr>
+
+<!-- Table to Display Students -->
+<h2>Student List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Group</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set group_dict = {} %}
+        {% for group in groups %}
+           {% set group_dict = group_dict.update({group.id: group.name}) %}
+        {% endfor %}
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ group_dict[student.id_group] }}</td>
+            <td>
+                <!-- Delete Button -->
+                <form method="POST" action="/delete_student/{{ student.id }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

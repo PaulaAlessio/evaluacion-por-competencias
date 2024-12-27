@@ -1,0 +1,94 @@
+{% extends 'index.html' %}
+{% block content %}
+<h1>Events</h1>
+
+<!-- Filter Students by Assignment -->
+<form method="GET" action="/filter_by_assignment" class="mb-4">
+    <div class="mb-3">
+        <label for="assignment_id" class="form-label">Select Assignment</label>
+        <select class="form-select" id="assignment_id" name="assignment_id">
+            {% for assignment in assignments %}
+            <option value="{{ assignment.id }}">{{ assignment.assignment_tag }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter Students</button>
+</form>
+
+<!-- Filter Assignments by Student -->
+<form method="GET" action="/filter_by_student" class="mb-4">
+    <div class="mb-3">
+        <label for="student_id" class="form-label">Select Student</label>
+        <select class="form-select" id="student_id" name="student_id">
+            console.log(students)
+            {% for student in students %}
+            console.log(student)
+            <option value="{{ student.id }}">{{ student.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">View Competencies</button>
+</form>
+
+<hr>
+
+<!-- Form: Add Events Per Assignment -->
+<h2>Add Events Per Assignment</h2>
+<form method="POST" action="/add_events_per_assignment/">
+    <div class="mb-3">
+        <label for="assignment_id" class="form-label">Select Assignment</label>
+        <select class="form-select" id="_assignment_id" name="assignment_id">
+            {% for assignment in assignments %}
+            <option value="{{ assignment.id }}">{{ assignment.assignment_tag }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Events</button>
+</form>
+
+<!-- Display Competency Scores (Dynamic Content from Backend) -->
+<h2>Competency Scores</h2>
+{% if events %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Assignment</th>
+            <th>CE1</th>
+            <th>CE2</th>
+            <th>CE3</th>
+            <th>CE4</th>
+            <th>CE5</th>
+            <th>CE6</th>
+            <th>CE7</th>
+            <th>CE8</th>
+            <th>CE9</th>
+            <th>CE10</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.assignment.assignment_tag }}</td>
+            <td>{{ event.CE1 }}</td>
+            <td>{{ event.CE2 }}</td>
+            <td>{{ event.CE3 }}</td>
+            <td>{{ event.CE4 }}</td>
+            <td>{{ event.CE5 }}</td>
+            <td>{{ event.CE6 }}</td>
+            <td>{{ event.CE7 }}</td>
+            <td>{{ event.CE8 }}</td>
+            <td>{{ event.CE9 }}</td>
+            <td>{{ event.CE10 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No events found for the selected criteria.</p>
+{% endif %}
+
+
+{% endblock %}
+
+
+

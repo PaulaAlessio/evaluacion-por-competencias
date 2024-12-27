@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content %}
+<h1>Assignments</h1>
+
+<!-- Form to Add a New Assignment -->
+<form method="POST" action="/add_assignment" class="mb-4">
+    <div class="mb-3">
+        <label for="assignment_tag" class="form-label">Assignment Name</label>
+        <input type="text" class="form-control" id="assignment_tag" name="assignment_tag" required>
+    </div>
+    <div class="mb-3">
+        <label for="exercise_number" class="form-label">Exercise Number</label>
+        <input type="number" class="form-control" id="exercise_number" name="exercise_number" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Assignment</button>
+</form>
+
+<hr>
+
+<!-- Table to Display Assignments -->
+<h2>Assignment List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Assignment Name</th>
+            <th>Exercise Number</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for assignment in assignments %}
+        <tr>
+            <td>{{ assignment.id }}</td>
+            <td>{{ assignment.assignment_tag }}</td>
+            <td>{{ assignment.exercise_number }}</td>
+            <td>
+                <form method="POST" action="/delete_assignment/{{ assignment.id }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
