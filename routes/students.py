@@ -27,8 +27,12 @@ def upload_students():
                     group = Group(name=group_name)
                     db.session.add(group)
                     db.session.commit()  # Commit to generate the group.id
-                new_student = Student(name=name, id_group=group.id)
-                db.session.add(new_student)
+                student = Student.query.filter_by(name=name).first()
+                if student:
+                    print("Este estudiante ya existe")
+                else:
+                    new_student = Student(name=name, id_group=group.id)
+                    db.session.add(new_student)
         db.session.commit()
     return redirect(url_for('students.students'))
 

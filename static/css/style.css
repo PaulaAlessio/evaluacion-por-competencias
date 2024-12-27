@@ -12,3 +12,21 @@
     background-color: Gainsboro !Important;
     color: Black;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #FFFFFF !important; /* Background color to make it visible */
+    z-index: 1020;
+    text-align: left; /* Align text if needed */
+}
+
+th, td {
+    padding: 8px 16px;
+    border: 1px solid #ddd; /* Optional: Add borders for clarity */
+}
