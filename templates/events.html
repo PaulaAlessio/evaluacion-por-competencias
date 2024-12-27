@@ -113,7 +113,7 @@
             <td contenteditable="true" class="editable" data-column="CE8" data-event-id="{{ event.id }}">{{ event.CE8 }}</td>
             <td contenteditable="true" class="editable" data-column="CE9" data-event-id="{{ event.id }}">{{ event.CE9 }}</td>
             <td contenteditable="true" class="editable" data-column="CE10" data-event-id="{{ event.id }}">{{ event.CE10 }}</td>
-            <td class="no_print">
+            <td>
                 <!-- Delete Button -->
                 <form method="POST" action="/delete_event/{{ event.id }}" style="display: inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -128,37 +128,9 @@
 <p>No events found for the selected criteria.</p>
 {% endif %}
 
+<script src="/static/js/editable_cells.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const editableCells = document.querySelectorAll(".editable");
-        editableCells.forEach(cell => {
-            cell.addEventListener("keydown", function (event) {
-                // Check if Enter key is pressed
-                if (event.key === "Enter") {
-                    event.preventDefault();  // Prevent Enter from creating a new line in contenteditable
-
-                    const newValue = cell.textContent.trim();  // Get the edited value
-                    const column = cell.getAttribute("data-column");  // Get the column name (CE1, CE2, etc.)
-                    const eventId = cell.getAttribute("data-event-id");  // Get the event ID
-
-                    // Construct the URL with query parameters
-                    const url = `/update_event?event_id=${eventId}&column=${column}&value=${newValue}`;
-
-                    // Send the GET request with the URL args
-                    fetch(url)
-                    .then(response => response.text())  // Expecting text response
-                    .then(data => {
-                        // Handle success (e.g., show a success message, update the table, etc.)
-                        console.log("Event updated successfully:", data);
-                    })
-                    .catch(error => {
-                        // Handle error (e.g., show an error message)
-                        console.error("Error updating event:", error);
-                    });
-                }
-            });
-        });
-    });
 
     // Generare il CSV direttamente con Jinja
     const csvData = `

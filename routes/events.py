@@ -64,7 +64,6 @@ def create_events():
   return filter_by_form()
 
 
-
 @events_bp.route('/delete_event/<int:id>', methods=['POST'])
 def delete_event(id):
   event = Event.query.get(id)

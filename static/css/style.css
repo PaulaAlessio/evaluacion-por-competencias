@@ -1,0 +1,13 @@
+.redc {
+    background-color: IndianRed !Important;
+    color: Darkred;
+}
+
+.green {
+    background-color: DarkSeaGreen !Important;
+    color: DarkGreen;
+}
+
+.gray {
+    background-color: Gainsboro !Important;
+}
