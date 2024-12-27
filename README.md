@@ -149,8 +149,6 @@ python app.py
 - **`/delete_student/<student_id>`** - Deletes a student from the database.
 - **`/delete_event/<event_id>`** - Deletes an event record.
 - **`/filter_by_form`** - Filters the event data based on selected student or assignment.
-- **`/export_csv`** - Exports filtered event data to a CSV file.
-- **`/export_pdf`** - Exports filtered event data to a PDF file.
 
 ## JavaScript Integration
 
