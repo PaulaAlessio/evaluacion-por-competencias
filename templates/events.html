@@ -71,14 +71,14 @@
 <h2>Competency Scores</h2>
 {% if events %}
 <div id="competencias">
-<table class="table table-bordered">
+<table class="table table-bordered" id="competencies-table">
     <thead>
         <tr>
             <th class="no_print"> Select</th>
-            <th class="no_print">ID</th>
-            <th>Student</th>
-            <th>Group</th>
-            <th>Assignment</th>
+            <th class="no_print"  onclick="sortTable(1, this)">ID</th>
+            <th  onclick="sortTable(2, this)">Student </th>
+            <th  onclick="sortTable(3, this)">Group</th>
+            <th  onclick="sortTable(4, this)">Assignment</th>
             <th>CE1</th>
             <th>CE2</th>
             <th>CE3</th>
@@ -112,7 +112,8 @@
             <td contenteditable="true" class="editable" data-column="CE10" data-event-id="{{ event.id }}">{{ event.CE10 }}</td>
             <td>
                 <!-- Delete Button -->
-                <form method="POST" action="/delete_event/{{ event.id }}" style="display: inline;">
+                <form method="POST" action="/delete_event/{{ event.id }}?student_id={{ student_id }}&assignment_id={{ assignment_id }}&group_id={{ group_id }}"
+                      style="display: inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </td>

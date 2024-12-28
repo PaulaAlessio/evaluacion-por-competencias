@@ -30,3 +30,11 @@ th, td {
     padding: 8px 16px;
     border: 1px solid #ddd; /* Optional: Add borders for clarity */
 }
+
+th.sorted-asc::after {
+    content: " \25B2"; /* Up arrow */
+}
+
+th.sorted-desc::after {
+    content: " \25BC"; /* Down arrow */
+}

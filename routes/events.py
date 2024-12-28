@@ -68,7 +68,8 @@ def delete_event(id):
   if event:
     db.session.delete(event)
     db.session.commit()
-  return redirect(url_for('events.events'))
+  return filter_by_form()
+ # return redirect(url_for('events.events'))
 
 
 @events_bp.route('/update_event', methods=['GET'])

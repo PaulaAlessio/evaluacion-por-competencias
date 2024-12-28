@@ -63,3 +63,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+function sortTable(columnIndex, headerElement) {
+    const table = document.getElementById("competencies-table");
+    const rows = Array.from(table.rows).slice(1); // Get all rows except the header
+    const isAscending = table.getAttribute("data-sort-order") === "asc";
+
+    // Toggle sort order
+    table.setAttribute("data-sort-order", isAscending ? "desc" : "asc");
+    // Add appropriate class to the clicked header
+    headerElement.classList.remove(isAscending ? "sorted-desc" : "sorted-asc");
+    headerElement.classList.add(isAscending ? "sorted-asc" : "sorted-desc");
+
+    // Sort rows based on the selected column
+    rows.sort((a, b) => {
+        const cellA = a.cells[columnIndex].innerText.trim();
+        const cellB = b.cells[columnIndex].innerText.trim();
+
+        if (!isNaN(cellA) && !isNaN(cellB)) {
+            // Numeric sorting
+            return isAscending ? cellA - cellB : cellB - cellA;
+        } else {
+            // String sorting
+            return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+        }
+    });
+
+    // Append sorted rows back to the table
+    const tbody = table.querySelector("tbody");
+    rows.forEach(row => tbody.appendChild(row));
+}
