@@ -52,12 +52,23 @@ Here is an overview of the project structure:
     /static/
         /js/
             events.js              # JavaScript file for event management
+            editable_cells.js      # JavaScript for cell management
+        /css/
+            style.css              # Style file    
     /templates/
         index.html                # Index page template
+        assignments.html          # Assignments page template
+        students.html             # Students page template
         events.html               # Events page template
+    /routes/ 
+        assignments.py
+        events.py
+        students.ppy
+    /data/                        # Directory for CSV student list files
+    /instance/                    # SQLite database    
     app.py                        # Main Flask application
-    /uploads/                     # Directory for uploaded CSV files
-    /instance/                    # SQLite database
+    models.py                     # Database Model (see below)
+    LICENSE                       # Project LICENSE
     README.md                     # Project README
 ```
 
@@ -86,38 +97,40 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    group = db.relationship('Group', backref=db.backref('students', lazy=True))
+    id_group = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(10), unique=True, nullable=False)
+
 
 class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     exercise_number = db.Column(db.Integer, nullable=False)
     assignment_tag = db.Column(db.String(100), nullable=False)
 
+
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_student = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     id_assignment = db.Column(db.Integer, db.ForeignKey('assignment.id'), nullable=False)
-    CE1 = db.Column(db.Float)
-    CE2 = db.Column(db.Float)
-    CE3 = db.Column(db.Float)
-    CE4 = db.Column(db.Float)
-    CE5 = db.Column(db.Float)
-    CE6 = db.Column(db.Float)
-    CE7 = db.Column(db.Float)
-    CE8 = db.Column(db.Float)
-    CE9 = db.Column(db.Float)
-    CE10 = db.Column(db.Float)
+    id_group = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+    CE1 = db.Column(db.Float, nullable=True)
+    CE2 = db.Column(db.Float, nullable=True)
+    CE3 = db.Column(db.Float, nullable=True)
+    CE4 = db.Column(db.Float, nullable=True)
+    CE5 = db.Column(db.Float, nullable=True)
+    CE6 = db.Column(db.Float, nullable=True)
+    CE7 = db.Column(db.Float, nullable=True)
+    CE8 = db.Column(db.Float, nullable=True)
+    CE9 = db.Column(db.Float, nullable=True)
+    CE10 = db.Column(db.Float, nullable=True)
 ```
-Apologies for the formatting issue! Below is the corrected README.md starting from the Database Setup section, formatted properly for Markdown.
-
 ## Database Setup
 
 The database will be created automatically when the application runs for the first time. To ensure the database is set up, you can run the `create_all()` method in `app.py`.
@@ -151,6 +164,18 @@ python app.py
 - **`/delete_selected_events`** - Deletes a list of selected event records.
 - **`/update_event`** - Updates the marks given to a competency.
 - **`/filter_by_form`** - Filters the event data based on selected student or assignment.
+
+## Usage
+### Load student list
+   Go to the student tab and upload a csv whose structure is given by `data/student_list.csv`.
+### Add assignments 
+   Go to the assignments tab and create new assignments
+### Generate events
+   Filter for an assignment of your choice and generate events for it. You can start 
+assigning marks to the competencies! Then you can filter for student, for group, 
+for assignment.
+
+![Events view](example.png "Example of Events view")
 
 ## JavaScript Integration
 
