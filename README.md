@@ -123,10 +123,9 @@ Apologies for the formatting issue! Below is the corrected README.md starting fr
 The database will be created automatically when the application runs for the first time. To ensure the database is set up, you can run the `create_all()` method in `app.py`.
 
 ```python
+# This will create the necessary tables in the SQLite database.
 from app import db
 db.create_all()
-
-This will create the necessary tables in the SQLite database.
 ```
 
 # Running the Application
@@ -146,8 +145,11 @@ python app.py
 
 - **`/`** - Displays the main student list and management interface.
 - **`/events`** - Displays the event management interface, where you can edit event data and view assignment details.
+- **`/create_events`** - Creates events for a given assignment, for one student or for all
 - **`/delete_student/<student_id>`** - Deletes a student from the database.
 - **`/delete_event/<event_id>`** - Deletes an event record.
+- **`/delete_selected_events`** - Deletes a list of selected event records.
+- **`/update_event`** - Updates the marks given to a competency.
 - **`/filter_by_form`** - Filters the event data based on selected student or assignment.
 
 ## JavaScript Integration
@@ -158,15 +160,21 @@ The application contains **JavaScript** code to handle dynamic operations such a
 - Toggle visibility of rows based on checkboxes.
 - Export filtered data to CSV or PDF formats.
 
-The JavaScript file is located in the `static/js/` folder and is dynamically linked using Flask’s `url_for()` function.
+The JavaScript file is located in the `static/js/` folder.
 
 ### Exporting Data to CSV
 
-You can export filtered student or event data to a CSV file by clicking the **Export to CSV** button after applying your desired filters.
+You can export filtered student or event data to a CSV file by clicking the **Export all to CSV** button after applying your desired filters.
 
 ### Exporting Data to PDF
 
-The application also supports exporting event data to a **PDF** file using the **Export to PDF** button. This feature is powered by the **jsPDF** library on the frontend.
+The application also supports exporting event data to a **PDF** file using the **Export selected to PDF** button. 
+This feature is powered by the **jsPDF** library on the frontend. It will export the 
+selected events only.
+
+### Select/Unselect all
+These two buttons supports selection of all events at once and the 
+opposite, unchecking all checkboxes at once. 
 
 ## Customizing the Application
 
@@ -176,12 +184,13 @@ The application is easily extendable. You can add more tables or routes to meet 
 - Implement additional views for student or assignment details.
 - Add user authentication or roles for better security.
 
-## Troubleshooting
+<!---## Troubleshooting
 
 - **404 Errors for Static Files**: If the static JavaScript or CSS files are not loading, ensure they are placed in the correct `static` directory and correctly linked in the HTML templates.
 - **Database Issues**: If you encounter issues with the database, try dropping the existing SQLite file and running `db.create_all()` again to recreate the tables.
+- **Database Improvement**: The database will be changed in the nex
 - **File Upload Errors**: Ensure that the uploaded files are in the correct CSV format and are being processed correctly on the backend.
-
+--> 
 ## Contributing
 
 If you'd like to contribute to this project, feel free to open an issue or submit a pull request. All contributions are welcome!

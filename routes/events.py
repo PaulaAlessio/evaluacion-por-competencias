@@ -90,9 +90,6 @@ def delete_event(id):
   return filter_by_form()
 
 
-# return redirect(url_for('events.events'))
-
-
 @events_bp.route('/delete_selected_events', methods=['POST'])
 def delete_selected_events():
   data = request.get_json()
