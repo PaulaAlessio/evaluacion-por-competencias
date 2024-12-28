@@ -26,6 +26,7 @@ def filter_by_form():
   _events = Event.query.all()
   if not student_id and assignment_id:  # Dropdown left unselected
     if group_id:
+      print("hola")
       _events = Event.query.filter_by(id_assignment=assignment_id, id_group=group_id).all()
     else:
       _events = Event.query.filter_by(id_assignment=assignment_id).all()
@@ -33,6 +34,9 @@ def filter_by_form():
     _events = Event.query.filter_by(id_student=student_id).all()
   elif assignment_id and student_id:
     _events = Event.query.filter_by(id_student=student_id, id_assignment=assignment_id).all()
+  else:
+    if group_id:
+      _events = Event.query.filter_by(id_group=group_id).all()
   return render_template('events.html', events=_events,
                          assignments=Assignment.query.all(), students=Student.query.all(),
                          groups=Group.query.all(),
