@@ -96,7 +96,8 @@
     <tbody>
         {% for event in events %}
         <tr id="row{{ event.id }}">
-            <td class="no_print"><input type="checkbox" data-row-id="row{{ event.id }}" class="rowCheckbox"></td>
+            <td class="no_print"><input type="checkbox" data-row-id="row{{ event.id }}"
+                                        data-event-id="{{ event.id }}" class="rowCheckbox"></td>
             <td class="no_print">{{ event.id }}</td>
             <td>{{ student_dict[event.id_student] }} </td>
             <td>{{ groups_dict[event.id_group] }}</td>

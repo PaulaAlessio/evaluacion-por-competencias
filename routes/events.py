@@ -95,10 +95,8 @@ def delete_event(id):
 def delete_selected_events():
     data = request.get_json()
     event_ids = data.get('event_ids', [])
-
     if not event_ids:
         return jsonify({"error": "No events provided"}), 400
-
     try:
         for event_id in event_ids:
             event = Event.query.get(event_id)
@@ -109,7 +107,6 @@ def delete_selected_events():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
 
 
 @events_bp.route('/update_event', methods=['GET'])

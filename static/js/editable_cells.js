@@ -96,7 +96,7 @@ function sortTable(columnIndex, headerElement) {
 
 document.getElementById("delSelectedBtn").addEventListener("click", function () {
     const checkboxes = document.querySelectorAll(".rowCheckbox:checked");
-    const selectedEventIds = Array.from(checkboxes).map(cb => cb.getAttribute("data-row-id"));
+    const selectedEventIds = Array.from(checkboxes).map(cb => cb.getAttribute("data-event-id"));
 
     if (selectedEventIds.length === 0) {
         alert("No events selected!");
@@ -119,7 +119,7 @@ document.getElementById("delSelectedBtn").addEventListener("click", function () 
                 alert("Selected events deleted successfully!");
                 // Optionally, refresh the page or remove the deleted rows from the table
                 selectedEventIds.forEach(id => {
-                    const row = document.querySelector(`input[data-row-id="${id}"]`).closest("tr");
+                    const row = document.querySelector(`input[data-event-id="${id}"]`).closest("tr");
                     row.remove();
                 });
             } else {
