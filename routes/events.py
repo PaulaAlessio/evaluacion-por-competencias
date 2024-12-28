@@ -62,19 +62,19 @@ def create_events():
       if student_id:
         if group_id:
           new_event = Event(id_student=student_id, id_assignment=assignment_id, id_group=group_id,
-                          CE1=None, CE2=None, CE3=None,
-                          CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
+                            CE1=None, CE2=None, CE3=None,
+                            CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
         else:
           new_event = Event(id_student=student_id, id_assignment=assignment_id,
-                          CE1=None, CE2=None, CE3=None,
-                          CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
+                            CE1=None, CE2=None, CE3=None,
+                            CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
         db.session.add(new_event)
       else:
         students = Student.query.all()
         for student in students:
           new_event = Event(id_student=student.id, id_assignment=assignment_id, id_group=student.id_group,
-                          CE1=None, CE2=None, CE3=None,
-                          CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
+                            CE1=None, CE2=None, CE3=None,
+                            CE4=None, CE5=None, CE6=None, CE7=None, CE8=None, CE9=None, CE10=None)
           if (group_id and int(group_id) == int(student.id_group)) or not group_id:
             db.session.add(new_event)
       db.session.commit()
@@ -88,25 +88,27 @@ def delete_event(id):
     db.session.delete(event)
     db.session.commit()
   return filter_by_form()
- # return redirect(url_for('events.events'))
+
+
+# return redirect(url_for('events.events'))
 
 
 @events_bp.route('/delete_selected_events', methods=['POST'])
 def delete_selected_events():
-    data = request.get_json()
-    event_ids = data.get('event_ids', [])
-    if not event_ids:
-        return jsonify({"error": "No events provided"}), 400
-    try:
-        for event_id in event_ids:
-            event = Event.query.get(event_id)
-            if event:
-                db.session.delete(event)
-        db.session.commit()
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+  data = request.get_json()
+  event_ids = data.get('event_ids', [])
+  if not event_ids:
+    return jsonify({"error": "No events provided"}), 400
+  try:
+    for event_id in event_ids:
+      event = Event.query.get(event_id)
+      if event:
+        db.session.delete(event)
+    db.session.commit()
+    return jsonify({"success": True}), 200
+  except Exception as e:
+    db.session.rollback()
+    return jsonify({"error": str(e)}), 500
 
 
 @events_bp.route('/update_event', methods=['GET'])
@@ -117,7 +119,7 @@ def update_event():
   value = request.args.get('value')
   print("updating id ", event_id, "column ", column, "value ", value)
   # Convert the value to a float (for CE1, CE2, ..., CE10)
-  if value == "None" or  value == "":
+  if value == "None" or value == "":
     value = None
   else:
     try:
