@@ -93,3 +93,42 @@ function sortTable(columnIndex, headerElement) {
     const tbody = table.querySelector("tbody");
     rows.forEach(row => tbody.appendChild(row));
 }
+
+document.getElementById("delSelectedBtn").addEventListener("click", function () {
+    const checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+    const selectedEventIds = Array.from(checkboxes).map(cb => cb.getAttribute("data-row-id"));
+
+    if (selectedEventIds.length === 0) {
+        alert("No events selected!");
+        return;
+    }
+
+    // Confirm deletion
+    if (!confirm("Are you sure you want to delete the selected events?")) return;
+
+    // Send the selected IDs to the backend
+    fetch("/delete_selected_events", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_ids: selectedEventIds }),
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Selected events deleted successfully!");
+                // Optionally, refresh the page or remove the deleted rows from the table
+                selectedEventIds.forEach(id => {
+                    const row = document.querySelector(`input[data-row-id="${id}"]`).closest("tr");
+                    row.remove();
+                });
+            } else {
+                alert("Error deleting events.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting events.");
+        });
+});
+
